@@ -1,32 +1,50 @@
 document.addEventListener('DOMContentLoaded', () => {
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-    const mobileNavMenu = document.querySelector('.mobile-nav-menu');
+    const mobileNavMenu = document.querySelector('header nav');
     const navLinks = document.querySelectorAll('nav ul li a:not(.btn), .mobile-nav-menu ul li a:not(.btn)');
     const sections = document.querySelectorAll('section[id]');
     const themeToggle = document.getElementById('theme-toggle');
-    const contactForm = document.getElementById('contact-form');
+    const header = document.querySelector('header');
+
+    /* Testimonial Slider (Commented out as not present in current HTML)
     const testimonialSlides = document.querySelector('.testimonial-slides');
     const prevButton = document.querySelector('.prev-slide');
     const nextButton = document.querySelector('.next-slide');
-    const header = document.querySelector('header');
     let currentSlide = 0;
+    */
 
-    // Sticky header with transparency on scroll
+    // Sticky header scroll listener removed as header is always styled
+    /*
     if (header) {
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) { // Add .scrolled class after 50px of scroll
+            if (window.scrollY > 50) { 
                 header.classList.add('scrolled');
             } else {
                 header.classList.remove('scrolled');
             }
         });
     }
+    */
 
     // Mobile Menu Toggle
     if (mobileMenuToggle && mobileNavMenu) {
         mobileMenuToggle.addEventListener('click', () => {
             mobileNavMenu.classList.toggle('active');
             mobileMenuToggle.textContent = mobileNavMenu.classList.contains('active') ? '✕' : '☰';
+            
+            // Prevent body scroll when menu is open
+            document.body.style.overflow = mobileNavMenu.classList.contains('active') ? 'hidden' : '';
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (mobileNavMenu.classList.contains('active') && 
+                !mobileNavMenu.contains(e.target) && 
+                !mobileMenuToggle.contains(e.target)) {
+                mobileNavMenu.classList.remove('active');
+                mobileMenuToggle.textContent = '☰';
+                document.body.style.overflow = '';
+            }
         });
     }
 
@@ -97,27 +115,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fade-in animations for elements
     const fadeInElements = document.querySelectorAll('.fade-in');
     const observerOptions = {
-        root: null, // relative to document viewport 
+        root: null,
         rootMargin: '0px',
-        threshold: 0.1 // 10% of item is visible
+        threshold: 0.1
     };
 
-    const observer = new IntersectionObserver((entries, observer) => {
+    const observer = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // If parent has 'fade-in-parent', stagger children
-                if (entry.target.parentElement.classList.contains('fade-in-parent')) {
-                    const children = entry.target.parentElement.querySelectorAll('.fade-in');
-                    children.forEach((child, index) => {
-                        child.style.animationDelay = `${index * 0.2}s`; // Stagger by 0.2s
-                        child.style.animationName = 'fadeInAnimation'; // Ensure animation name is set
-                        child.classList.add('animate'); // Add a class to trigger animation
-                    });
-                } else {
-                    entry.target.style.animationName = 'fadeInAnimation';
-                    entry.target.classList.add('animate');
-                }
-                observer.unobserve(entry.target); // Stop observing once animated
+                entry.target.classList.add('animate');
+                obs.unobserve(entry.target);
             }
         });
     }, observerOptions);
@@ -126,105 +133,169 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(el);
     });
 
-    // Testimonial Slider
-    function showTestimonial(index) {
-        if (!testimonialSlides) return;
-        const totalSlides = testimonialSlides.children.length;
-        if (index >= totalSlides) currentSlide = 0;
-        else if (index < 0) currentSlide = totalSlides - 1;
-        else currentSlide = index;
-        testimonialSlides.style.transform = `translateX(-${currentSlide * 100}%)`;
-    }
-
-    if (prevButton && nextButton) {
-        prevButton.addEventListener('click', () => {
-            showTestimonial(currentSlide - 1);
-        });
-
-        nextButton.addEventListener('click', () => {
-            showTestimonial(currentSlide + 1);
-        });
-        // Auto-slide (optional)
-        // setInterval(() => {
-        //     showTestimonial(currentSlide + 1);
-        // }, 5000); // Change slide every 5 seconds
-    }
-    showTestimonial(0); // Show first testimonial initially
-
-    // Photo Gallery View More
+    // ===== Dynamic Photo Gallery =====
     const galleryGrid = document.querySelector('.gallery-grid');
     const viewMoreGalleryButton = document.getElementById('viewMoreGallery');
-    const initiallyVisibleItems = 8; // Show 8 items initially
+    const imageModal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalCloseButton = document.getElementById('modalCloseButton');
 
-    if (galleryGrid && viewMoreGalleryButton) {
-        const galleryItems = Array.from(galleryGrid.querySelectorAll('.gallery-item'));
+    const photoBasePath = './photos/';
+    const photoPrefix = 'photo_';
+    const photoExtension = '.jpeg';
+    const maxPhotosToCheck = 50; // How many photos to attempt to load (e.g., photo_1.jpeg to photo_50.jpeg)
+    const initiallyVisibleItems = 8;
+    let loadedGalleryItems = []; // To store the actual gallery item DOM elements
 
-        // Initial setup: mark items beyond the initial count as hidden if not already
-        galleryItems.forEach((item, index) => {
-            if (index >= initiallyVisibleItems && !item.hasAttribute('data-hidden')) {
-                item.setAttribute('data-hidden', 'true');
-            }
+    async function imageExists(url) {
+        return new Promise(resolve => {
+            const img = new Image();
+            img.onload = () => resolve(true);
+            img.onerror = () => resolve(false);
+            img.src = url;
         });
+    }
 
-        function updateGalleryVisibility() {
-            let allCurrentlyHidden = true;
-            let actualVisibleCount = 0;
+    async function loadGalleryImages() {
+        if (!galleryGrid) return;
+        galleryGrid.innerHTML = ''; // Clear any existing items (like placeholders)
+        loadedGalleryItems = [];
+        let consecutiveMisses = 0;
+        const maxConsecutiveMisses = 3; // Stop if 3 images in a row are not found
 
-            galleryItems.forEach((item, index) => {
-                const isMarkedHidden = item.getAttribute('data-hidden') === 'true';
+        for (let i = 1; i <= maxPhotosToCheck; i++) {
+            const photoName = `${photoPrefix}${i}${photoExtension}`;
+            const photoUrl = `${photoBasePath}${photoName}`;
 
-                if (viewMoreGalleryButton.classList.contains('all-visible')) {
-                    // If 'View Less' is active, show all items
-                    item.style.display = 'flex';
-                    actualVisibleCount++;
-                    if(isMarkedHidden) allCurrentlyHidden = false; // If any hidden item is now shown
-                } else {
-                    // If 'View More' is active
-                    if (index < initiallyVisibleItems) {
-                        item.style.display = 'flex';
-                        actualVisibleCount++;
-                        if(isMarkedHidden) allCurrentlyHidden = false;
-                    } else if (isMarkedHidden) {
-                        item.style.display = 'none';
-                    } else { // Items beyond initial that are not marked hidden (should be rare after init)
-                        item.style.display = 'flex'; 
-                        actualVisibleCount++;
-                    }
-                }
-            });
-            
-            const totalItems = galleryItems.length;
-            const hiddenItemsCount = galleryItems.filter(item => item.getAttribute('data-hidden') === 'true').length;
+            if (await imageExists(photoUrl)) {
+                consecutiveMisses = 0; // Reset misses if image is found
+                const item = document.createElement('div');
+                item.classList.add('gallery-item');
+                
+                const img = document.createElement('img');
+                img.src = photoUrl;
+                img.alt = `Handyman project example ${i}`;
+                img.style.cursor = 'pointer'; // Add pointer cursor
 
-            if (viewMoreGalleryButton.classList.contains('all-visible')) {
-                viewMoreGalleryButton.textContent = 'View Less';
-                // Show button if there are items to hide (i.e., more than initially visible)
-                if (totalItems > initiallyVisibleItems) {
-                    viewMoreGalleryButton.style.display = 'inline-block';
-                } else {
-                    viewMoreGalleryButton.style.display = 'none';
-                }
+                img.addEventListener('click', () => openModal(photoUrl));
+
+                item.appendChild(img);
+                galleryGrid.appendChild(item);
+                loadedGalleryItems.push(item);
             } else {
-                viewMoreGalleryButton.textContent = 'View More';
-                // Show button if there are hidden items to show
-                if (hiddenItemsCount > 0 && actualVisibleCount < totalItems) {
-                     viewMoreGalleryButton.style.display = 'inline-block';
-                } else {
-                    viewMoreGalleryButton.style.display = 'none';
+                consecutiveMisses++;
+                if (consecutiveMisses >= maxConsecutiveMisses) {
+                    console.log(`Stopping gallery load: ${maxConsecutiveMisses} consecutive images not found, last checked: ${photoName}`);
+                    break; // Stop if too many images are missing in a row
                 }
-            }
-             // Final check: if all items are visible by default (e.g. less than initiallyVisibleItems), hide button
-            if (totalItems <= initiallyVisibleItems) {
-                viewMoreGalleryButton.style.display = 'none';
             }
         }
+        setupGalleryControls();
+        // Re-apply fade-in to the grid if it was already observed and animated
+        if (galleryGrid.classList.contains('animate')) {
+            galleryGrid.classList.remove('animate');
+            galleryGrid.style.animationName = 'none';
+            void galleryGrid.offsetWidth; // Trigger reflow
+            galleryGrid.style.animationName = 'fadeInAnimation';
+            galleryGrid.classList.add('animate');
+        } else if (!galleryGrid.classList.contains('fade-in')){
+             // If the grid itself wasn't a fade-in target, ensure it becomes visible.
+             galleryGrid.style.opacity = 1;
+        }
+    }
 
-        updateGalleryVisibility(); // Call on page load
+    function setupGalleryControls() {
+        if (!viewMoreGalleryButton || loadedGalleryItems.length === 0) {
+            if(viewMoreGalleryButton) viewMoreGalleryButton.style.display = 'none';
+            return;
+        }
 
-        viewMoreGalleryButton.addEventListener('click', () => {
-            viewMoreGalleryButton.classList.toggle('all-visible');
-            updateGalleryVisibility();
+        // Initially hide items beyond the initiallyVisibleItems count
+        loadedGalleryItems.forEach((item, index) => {
+            item.style.opacity = '1'; // Ensure opacity is set for transition if any
+            if (index >= initiallyVisibleItems) {
+                item.style.display = 'none';
+                item.setAttribute('data-initially-hidden', 'true');
+            } else {
+                item.style.display = 'block'; // Or your default display for grid items
+                item.removeAttribute('data-initially-hidden');
+            }
         });
+
+        if (loadedGalleryItems.length <= initiallyVisibleItems) {
+            viewMoreGalleryButton.style.display = 'none'; // Hide button if not enough items
+        } else {
+            viewMoreGalleryButton.style.display = 'inline-block'; // Show the button
+            viewMoreGalleryButton.textContent = 'View More';
+        }
+    }
+    
+    if (viewMoreGalleryButton) {
+        viewMoreGalleryButton.addEventListener('click', () => {
+            const currentlyShowingAll = viewMoreGalleryButton.textContent === 'View Less';
+
+            if (currentlyShowingAll) {
+                // Hide the extra items again
+                loadedGalleryItems.forEach((item, index) => {
+                    if (index >= initiallyVisibleItems) {
+                        item.style.display = 'none';
+                    }
+                });
+                viewMoreGalleryButton.textContent = 'View More';
+            } else {
+                // Show all hidden items
+                loadedGalleryItems.forEach(item => {
+                    if (item.getAttribute('data-initially-hidden') === 'true') {
+                        item.style.display = 'block'; // Or your default display for grid items
+                    }
+                });
+                viewMoreGalleryButton.textContent = 'View Less';
+            }
+        });
+    }
+
+    // ===== Image Modal Functionality (Adapted for Dynamic Gallery) =====
+    function openModal(src) {
+        if (imageModal && modalImage) {
+            modalImage.src = src;
+            // Update alt text based on the image being opened
+            const photoNumberMatch = src.match(/photo_(\d+)\.jpeg$/);
+            if (photoNumberMatch && photoNumberMatch[1]) {
+                modalImage.alt = `Full Size Image of Ricky's Work - Project ${photoNumberMatch[1]}`;
+            } else {
+                modalImage.alt = "Full Size Image of Ricky's Work";
+            }
+            imageModal.classList.add('active');
+        }
+    }
+
+    function closeModal() {
+        if (imageModal) {
+            imageModal.classList.remove('active');
+        }
+    }
+
+    if (modalCloseButton) {
+        modalCloseButton.addEventListener('click', closeModal);
+    }
+
+    if (imageModal) {
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal) {
+                closeModal();
+            }
+        });
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && imageModal && imageModal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    // Initialize dynamic gallery loading
+    if (galleryGrid) {
+        loadGalleryImages();
     }
 
 });
