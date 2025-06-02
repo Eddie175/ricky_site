@@ -1,0 +1,1037 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ===== THEME VARIABLES - Edit these to customize colors ===== */
+:root {
+    /* Light Mode Colors - Enhanced Contrast */
+    --primary-color: #0066cc; /* Slightly darker blue for better contrast on white */
+    --primary-color-rgb: 0, 102, 204;
+    --secondary-color: #f0f2f5; /* Light gray background for sections */
+    --accent-color: #007bff; /* A common, vibrant blue */
+    --text-color: #1a1a1a; /* Darker text for high contrast */
+    --text-secondary: #555555; /* Darker secondary text */
+    --background-color: #ffffff;
+    --card-background: rgba(255, 255, 255, 0.8); /* White card, slightly more opaque */
+    --border-color: #d1d5db;    /* More visible border */
+    --shadow-color: rgba(0, 0, 0, 0.1); /* Slightly darker shadow */
+    --success-color: #22c55e; /* A vibrant green */
+    --glass-background: rgba(248, 249, 250, 0.75); /* Light glass bg, more opaque for header */
+    --glass-border: rgba(0, 0, 0, 0.1);   /* Subtle border for glass */
+    --glass-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+    /* Spacing & Layout */
+    --space-xxs: 4px;
+    --space-xs: 8px;
+    --space-sm: 12px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-xxl: 48px;
+    --space-xxxl: 64px;
+
+    --section-padding-y: var(--space-xxxl);
+    --container-padding-x: var(--space-md);
+    --container-width: 100%;
+    --border-radius: 10px;
+    --transition-speed: 0.25s;
+}
+
+/* Dark Mode Colors */
+[data-theme="dark"] {
+    --primary-color: #3b82f6; /* Adjusted for dark mode */
+    --primary-color-rgb: 59, 130, 246;
+    --secondary-color: #1f2937; /* Dark gray for sections */
+    --accent-color: #60a5fa; /* Lighter blue for accents */
+    --text-color: #f3f4f6; /* Off-white text */
+    --text-secondary: #9ca3af; /* Lighter gray secondary text */
+    --background-color: #111827; /* Very dark blue-gray */
+    --card-background: rgba(31, 41, 55, 0.75); /* Dark card, more opaque */
+    --border-color: #4b5563; /* More visible border in dark mode */
+    --shadow-color: rgba(0, 0, 0, 0.3); /* Consistent shadow approach */
+    --glass-background: rgba(17, 24, 39, 0.75); /* Darker glass, more opaque */
+    --glass-border: rgba(255, 255, 255, 0.1); /* Light border for glass */
+    --glass-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* ===== RESET & BASIC STYLES ===== */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'San Francisco', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: var(--text-color);
+    line-height: 1.6;
+    background-color: var(--background-color);
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+.container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--container-padding-x);
+}
+
+h1, h2, h3 {
+    margin-bottom: var(--space-lg);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+h1 {
+    font-size: 40px;
+    line-height: 1.2;
+}
+
+h2 {
+    font-size: 32px;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+}
+
+h3 {
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+}
+
+p {
+    margin-bottom: var(--space-md);
+    color: var(--text-secondary);
+    font-size: 16px;
+    font-weight: 400;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: color var(--transition-speed);
+}
+
+a:hover {
+    color: var(--accent-color);
+}
+
+/* === Buttons === */
+.btn {
+    display: inline-block;
+    padding: var(--space-sm) var(--space-lg);
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    font-size: 16px;
+    transition: all var(--transition-speed) ease-out;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(var(--primary-color-rgb), 0.25);
+    position: relative;
+    overflow: hidden;
+    transform: translateZ(0);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, rgba(255,255,255,0) 20%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0) 80%);
+    /* transition: left var(--transition-speed) ease-out; */ /* Remove transition from base state */
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 15px rgba(var(--primary-color-rgb), 0.3);
+}
+
+.btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(var(--primary-color-rgb), 0.2);
+}
+
+.btn:hover::before {
+    left: 100%;
+    transition: left var(--transition-speed) ease-out; /* Apply transition only on hover */
+}
+
+[data-theme="dark"] .btn:hover {
+    color: #ffffff; /* Ensure primary button text is white on hover in dark mode */
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+    color: #eff6ff; /* Brighter text for secondary button on hover in dark mode */
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    box-shadow: none;
+}
+
+.btn-secondary:hover {
+    background-color: rgba(var(--primary-color-rgb), 0.08);
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+    transform: translateY(-3px);
+    box-shadow: 0 7px 15px rgba(var(--primary-color-rgb), 0.1);
+}
+
+.btn-secondary:active {
+    background-color: rgba(var(--primary-color-rgb), 0.12);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(var(--primary-color-rgb), 0.05);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+}
+
+section {
+    padding: var(--section-padding-y) 0;
+    transition: background-color var(--transition-speed);
+}
+
+/* Header with enhanced glass effect */
+header {
+    padding: var(--space-md) 0;
+    background-color: transparent;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid transparent;
+    box-shadow: none;
+    transition: background-color var(--transition-speed) ease, backdrop-filter var(--transition-speed) ease, -webkit-backdrop-filter var(--transition-speed) ease, border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+header.scrolled {
+    background-color: var(--glass-background);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 32px;
+    margin-right: var(--space-xs);
+    border-radius: 0;
+}
+
+.logo span {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: var(--space-xl);
+}
+
+nav ul li a {
+    font-weight: 500;
+    color: var(--text-color);
+    position: relative;
+    padding: var(--space-xs) 0;
+    font-size: 16px;
+}
+
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--primary-color);
+    transition: width 0.3s;
+}
+
+nav ul li a:hover {
+    color: var(--primary-color);
+}
+
+nav ul li a:hover::after {
+    width: 100%;
+}
+
+nav ul li a.active {
+    color: var(--primary-color);
+}
+
+nav ul li a.active::after {
+    width: 100%;
+}
+
+/* Theme Switcher within Nav */
+.theme-switcher-li {
+    display: flex;
+    align-items: center; /* Vertically center the toggle in the nav item */
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px; /* Width of the toggle switch */
+    height: 34px; /* Height of the toggle switch */
+    cursor: pointer;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc; /* Default background of the slider track */
+    transition: .4s;
+    border-radius: 34px; /* Make it pill-shaped */
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 26px; /* Height of the knob */
+    width: 26px; /* Width of the knob */
+    left: 4px; /* Position from left */
+    bottom: 4px; /* Position from bottom */
+    background-color: white; /* Knob color */
+    transition: .4s;
+    border-radius: 50%; /* Make knob circular */
+}
+
+input:checked + .toggle-slider {
+    background-color: var(--primary-color); /* Slider track color when active (dark mode) */
+}
+
+input:focus + .toggle-slider {
+    box-shadow: 0 0 1px var(--primary-color);
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(26px); /* Move knob to the right when active */
+}
+
+.toggle-icons {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 6px;
+    z-index: 1; /* Ensure icons are above the slider but below the knob if knob were transparent */
+    pointer-events: none; /* Allow clicks to pass through to the input */
+}
+
+.toggle-icons span {
+    font-size: 14px;
+    color: white; /* Initial color for icons, might need adjustment based on slider state */
+}
+
+/* Adjust icon visibility based on toggle state if needed, or keep both visible */
+/* Example: input:not(:checked) ~ .toggle-icons span:last-child { opacity: 0.5; } */
+/* input:checked ~ .toggle-icons span:first-child { opacity: 0.5; } */
+
+.mobile-menu-toggle {
+    display: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: var(--text-color);
+}
+
+.mobile-nav-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--glass-background);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 20px 0;
+}
+
+.mobile-nav-menu ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.mobile-nav-menu ul li a {
+    font-size: 18px;
+}
+
+/* ===== HERO SECTION ===== */
+#hero {
+    background-color: var(--secondary-color); /* Or a gradient, or image */
+    text-align: center;
+    padding-top: var(--space-xxxl); /* Generous padding */
+    padding-bottom: var(--space-xxxl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh; /* Ensure it takes up a good portion of the viewport */
+}
+
+#hero .container {
+    max-width: 800px; /* Constrain text width for readability */
+}
+
+#hero h1 {
+    font-size: 48px; /* Larger for hero */
+    font-weight: 700; /* Bold for impact */
+    color: var(--text-color);
+    margin-bottom: var(--space-md);
+    line-height: 1.15;
+}
+
+#hero p {
+    font-size: 18px; /* Slightly larger paragraph for hero */
+    color: var(--text-secondary);
+    margin-bottom: var(--space-xl); /* More space before buttons */
+    max-width: 600px; /* Constrain paragraph width */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: center;
+    margin-bottom: var(--space-xl);
+}
+
+.hero-image-container {
+    margin-top: var(--space-xxl);
+    max-width: 900px; /* Control hero image size */
+    width: 100%;
+}
+
+.hero-image-container img {
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 30px var(--shadow-color); /* Subtle shadow for depth */
+}
+
+/* ===== Shared Section Title Styling ===== */
+.section-title {
+    text-align: center;
+    margin-bottom: var(--space-xxl); /* Space after title block before content */
+}
+
+.section-title h2 {
+    font-size: 36px; /* Slightly larger for section titles */
+    color: var(--text-color);
+    margin-bottom: var(--space-sm);
+}
+
+.section-title p {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ===== FEATURES SECTION ===== */
+#features {
+    background-color: var(--background-color);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-xl); /* Spacing between cards */
+}
+
+.feature-card {
+    background-color: var(--card-background);
+    padding: var(--space-xl); /* Internal padding for cards */
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 5px 15px var(--shadow-color);
+    transition: transform var(--transition-speed) ease-out, box-shadow var(--transition-speed) ease-out;
+    text-align: left; /* Align text to the left within cards */
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(var(--primary-color-rgb), 0.15); /* More prominent shadow on hover, using primary color tint */
+}
+
+.feature-icon {
+    margin-bottom: var(--space-lg);
+    /* Optional: Add a background to the icon if desired */
+    /* background-color: rgba(var(--primary-color-rgb), 0.1); */
+    /* display: inline-flex; */
+    /* padding: var(--space-sm); */
+    /* border-radius: 50%; */
+}
+
+.feature-icon img {
+    height: 48px; /* Icon size */
+    width: 48px;
+    /* If icon has its own padding/bg, remove border-radius from img itself */
+    /* border-radius: 0; */
+}
+
+.feature-card h3 {
+    font-size: 22px; /* Slightly smaller than global h3 for card context */
+    color: var(--text-color);
+    margin-bottom: var(--space-sm);
+}
+
+.feature-card p {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 0; /* Remove bottom margin if it's the last element */
+}
+
+/* ===== ABOUT SECTION ===== */
+#about {
+    background-color: var(--secondary-color);
+}
+
+.about-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    align-items: center;
+    gap: var(--space-xxl); /* Gap between text and image */
+}
+
+.about-content h2 {
+    /* Uses .section-title styling if applicable, or define locally */
+    /* Forcing left align if it's inside a centered .section-title */
+    text-align: left;
+    font-size: 36px; /* Consistent with section titles */
+    color: var(--text-color);
+    margin-bottom: var(--space-lg);
+}
+
+.about-content p {
+    font-size: 17px; /* Specific size for about section if desired, else use global P */
+    color: var(--text-secondary);
+    margin-bottom: var(--space-md);
+    text-align: left;
+}
+
+.about-content .btn {
+    margin-top: var(--space-lg); /* Space above the button */
+}
+
+.about-image {
+    text-align: center; /* Center image if it's narrower than column */
+}
+
+.about-image img {
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 30px var(--shadow-color); /* Consistent shadow */
+}
+
+/* ===== TESTIMONIALS SECTION ===== */
+#testimonials {
+    background-color: var(--background-color); /* Or a slightly different shade */
+}
+
+.testimonial-slider {
+    position: relative;
+    max-width: 800px; /* Control max width of slider */
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.testimonial-slides {
+    display: flex;
+    transition: transform var(--transition-speed) ease-in-out;
+}
+
+.testimonial-slide {
+    min-width: 100%;
+    background-color: var(--card-background);
+    padding: var(--space-xl); /* Internal padding */
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 5px 15px var(--shadow-color);
+    text-align: center;
+    margin: var(--space-xs) 0; /* Small vertical margin for visual separation if needed */
+}
+
+.testimonial-slide img.author-avatar {
+    width: 80px; /* Avatar size */
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto var(--space-lg);
+    object-fit: cover;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.testimonial-slide p.quote {
+    font-size: 18px;
+    font-style: italic;
+    color: var(--text-color);
+    line-height: 1.6;
+    margin-bottom: var(--space-md);
+}
+
+.testimonial-slide p.author {
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 16px;
+}
+
+.slider-nav {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-md);
+    margin-top: var(--space-xl);
+}
+
+.slider-nav button {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed);
+}
+
+.slider-nav button:hover {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* ===== CTA SECTION ===== */
+#cta {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: white; /* Ensuring text is white on gradient */
+    text-align: center;
+    padding: var(--space-xxxl) var(--container-padding-x); /* Generous padding */
+}
+
+#cta h2 {
+    font-size: 36px;
+    margin-bottom: var(--space-md);
+    color: white; /* Ensuring text is white */
+}
+
+#cta p {
+    font-size: 18px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: var(--space-xl); /* Space before button */
+    color: rgba(255, 255, 255, 0.9); /* Slightly transparent white for P */
+}
+
+#cta .btn {
+    background-color: white; /* White button on colored background */
+    color: var(--primary-color);
+    font-weight: 600;
+    padding: var(--space-md) var(--space-xl); /* Larger padding for CTA button */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+#cta .btn:hover {
+    background-color: #f0f0f0; /* Slightly off-white on hover */
+    color: var(--accent-color);
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+/* ===== GALLERY SECTION ===== */
+#gallery {
+    background-color: var(--background-color);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+}
+
+.gallery-item {
+    background-color: var(--card-background);
+    border-radius: var(--border-radius);
+    overflow: hidden; /* Ensures image respects border radius */
+    box-shadow: 0 5px 15px var(--shadow-color);
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    aspect-ratio: 1 / 1; /* Default to square, will be overridden by image content */
+    display: flex; /* For centering image */
+    align-items: center;
+    justify-content: center;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* This is key for handling different aspect ratios */
+    display: block; /* Removes extra space below image */
+    transition: transform var(--transition-speed) ease, opacity var(--transition-speed) ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 10px 25px var(--shadow-color);
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+/* Initially hide items that are meant to be shown on 'View More' */
+.gallery-item[data-hidden="true"] {
+    display: none;
+}
+
+.gallery-controls {
+    text-align: center;
+    margin-top: var(--space-lg);
+}
+
+/* ===== CONTACT SECTION ===== */
+#contact {
+    background-color: var(--secondary-color);
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-xl);
+    margin-bottom: var(--space-xxl); /* Space before the form */
+}
+
+.contact-item {
+    background-color: var(--card-background);
+    padding: var(--space-xl);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 5px 15px var(--shadow-color);
+    text-align: center;
+}
+
+.contact-icon {
+    font-size: 32px; /* Icon size */
+    color: var(--primary-color);
+    margin-bottom: var(--space-md);
+    /* For image icons if you switch from text/emoji based icons */
+    /* img { height: 40px; width: 40px; } */
+}
+
+.contact-item h3 {
+    font-size: 20px;
+    color: var(--text-color);
+    margin-bottom: var(--space-xs);
+}
+
+.contact-item p {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+}
+
+.contact-form-container {
+    background-color: var(--card-background);
+    padding: var(--space-xxl); /* Generous padding for form container */
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 5px 20px var(--shadow-color);
+    max-width: 700px;
+    margin: 0 auto; /* Center the form container */
+}
+
+.contact-form-container .section-title h2, /* If using section-title inside */
+.contact-form-container > h2 { /* Or a direct h2 */
+    text-align: center;
+    font-size: 32px;
+    color: var(--text-color);
+    margin-bottom: var(--space-xl);
+}
+
+.form-group {
+    margin-bottom: var(--space-lg);
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-xs);
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-size: 16px;
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.2);
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+#contact .btn { /* Button inside contact form */
+    width: 100%;
+    padding-top: var(--space-md);
+    padding-bottom: var(--space-md);
+    font-size: 17px;
+}
+
+/* ===== FOOTER ===== */
+footer {
+    background-color: #18181b; /* Slightly different dark for footer */
+    color: var(--text-secondary); /* Use text-secondary for dark bg default */
+    padding: var(--space-xxl) var(--container-padding-x) var(--space-xl);
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-xl);
+    margin-bottom: var(--space-xxl);
+}
+
+.footer-col {
+    margin-bottom: var(--space-lg); /* Space for columns on mobile stack */
+}
+
+.footer-logo {
+    margin-bottom: var(--space-md);
+}
+
+.footer-logo img {
+    height: 36px;
+    margin-bottom: var(--space-sm);
+    filter: grayscale(1) brightness(1.8); /* Adjusted for new dark bg */
+}
+
+.footer-logo span {
+    font-size: 20px;
+    font-weight: 600;
+    color: #e4e4e7; /* Lighter color for company name */
+}
+
+.footer-col p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #a1a1aa; /* Specific color for footer p */
+    margin-bottom: var(--space-md);
+}
+
+.footer-col h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #e4e4e7; /* Lighter color for headings */
+    margin-bottom: var(--space-lg);
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: var(--space-sm);
+}
+
+.footer-links a {
+    color: #a1a1aa; /* Specific color for footer links */
+    text-decoration: none;
+    transition: color var(--transition-speed);
+}
+
+.footer-links a:hover {
+    color: var(--primary-color); /* Use theme primary on hover */
+}
+
+.social-links {
+    display: flex;
+    gap: var(--space-md);
+    align-items: center; /* Align icons nicely if they have different heights */
+}
+
+.social-links a {
+    color: #a1a1aa;
+    font-size: 22px; /* Slightly adjusted icon size */
+    transition: color var(--transition-speed), transform var(--transition-speed);
+}
+
+.social-links a:hover {
+    color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: var(--space-xl);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.copyright p {
+    font-size: 14px;
+    color: #71717a; /* Even more subtle for copyright */
+    margin: 0;
+}
+
+/* ===== UTILITIES & ANIMATIONS ===== */
+/* Fade-in animation (Intersection Observer controlled) */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInAnimation 0.8s ease-out forwards;
+}
+
+@keyframes fadeInAnimation {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Staggered fade-in for child elements */
+.fade-in-parent .fade-in {
+    animation: none;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+    header nav ul {
+        display: none;
+    }
+    .mobile-menu-toggle {
+        display: block;
+    }
+    .mobile-nav-menu.active {
+        display: flex;
+    }
+
+    .header-container {
+        padding: 0 10px;
+    }
+
+    #hero {
+        padding: 80px 0;
+    }
+    #hero h1 {
+        font-size: 36px;
+    }
+    #hero p {
+        font-size: 18px;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .about-container {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .about-image {
+        order: -1;
+    }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 { font-size: 32px; }
+    h2 { font-size: 28px; }
+    .btn { padding: 12px 24px; font-size: 16px; }
+    .section-padding { padding: 60px 0; }
+    #hero { padding: 60px 0; }
+    .feature-card { padding: 30px; }
+    .testimonial-slide { padding: 30px; }
+    .contact-form-container { padding: 30px; }
+
+    nav ul li a { font-size: 16px; }
+}
+
+/* Accessibility: Focus Visible */
+:focus-visible {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 5px rgba(var(--primary-color-rgb), 0.3);
+}
+
+/* For elements that shouldn't have the default outline, e.g., custom styled checkboxes/radios */
+.custom-focus-element:focus-visible {
+    /* custom focus style */
+} 

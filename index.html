@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Company Name - Landing Page</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Fixed Theme Toggle Button - Will be moved -->
+    <!--
+    <div class="theme-toggle">
+        <label class="toggle-switch">
+            <span class="toggle-icons">
+                <span>☀️</span>
+                <span>🌙</span>
+            </span>
+            <input type="checkbox" id="theme-toggle">
+            <span class="toggle-slider"></span>
+        </label>
+    </div>
+    -->
+
+    <!-- Add inline styling for feature cards and contact items to ensure effects work -->
+    <style id="hover-fix">
+        .feature-card, .contact-item {
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+            cursor: pointer !important;
+            transform: scale(1) !important;
+        }
+        
+        .feature-card:hover, .contact-item:hover {
+            transform: scale(1.05) !important;
+            box-shadow: 0 20px 30px rgba(var(--primary-color-rgb), 0.15) !important;
+            border-color: var(--primary-color) !important;
+            background-color: rgba(var(--primary-color-rgb), 0.03) !important;
+            z-index: 5 !important;
+        }
+    </style>
+
+    <!-- Page Transition Element - Not needed since we're using scroll navigation -->
+    <!-- <div class="page-transition"></div> -->
+
+    <!-- ===== HEADER SECTION ===== -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <!-- Replace with your logo image -->
+                <img src="/api/placeholder/120/40" alt="Your Logo">
+                <span>Company</span>
+            </div>
+            <div class="header-actions">
+                <button class="mobile-menu-toggle" aria-label="Toggle Menu">☰</button>
+                <nav>
+                    <ul>
+                        <li><a href="#home" class="scroll-link">Home</a></li>
+                        <li><a href="#features" class="scroll-link">Features</a></li>
+                        <li><a href="#about" class="scroll-link">About</a></li>
+                        <li><a href="#contact" class="scroll-link">Contact</a></li>
+                        <li class="theme-switcher-li">
+                            <label class="toggle-switch" for="theme-toggle">
+                                <span class="toggle-icons">
+                                    <span>☀️</span>
+                                    <span>🌙</span>
+                                </span>
+                                <input type="checkbox" id="theme-toggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section id="home" class="hero">
+        <div class="container">
+            <h1 class="fade-in">Your Compelling Headline Here</h1>
+            <p class="fade-in">A brief description of your product or service that highlights the main benefit for your customers. Keep it short and engaging.</p>
+            <div class="hero-buttons fade-in">
+                <a href="#features" class="btn scroll-link">Get Started</a>
+                <a href="#about" class="btn btn-secondary scroll-link">Learn More</a>
+            </div>
+
+            <!-- Hero image - replace with your own -->
+            <div class="hero-image fade-in">
+                <img src="/api/placeholder/1000/600" alt="Hero Image">
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURES SECTION ===== -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="features-title">
+                <h2 class="fade-in">Our Features</h2>
+                <p class="fade-in">Discover what makes our product special.</p>
+            </div>
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <img src="/api/placeholder/40/40" alt="Feature 1">
+                    </div>
+                    <h3>Feature One</h3>
+                    <p>A brief description of this feature and how it benefits the user.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <img src="/api/placeholder/40/40" alt="Feature 2">
+                    </div>
+                    <h3>Feature Two</h3>
+                    <p>A brief description of this feature and how it benefits the user.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <img src="/api/placeholder/40/40" alt="Feature 3">
+                    </div>
+                    <h3>Feature Three</h3>
+                    <p>A brief description of this feature and how it benefits the user.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ABOUT SECTION ===== -->
+    <section id="about" class="about">
+        <div class="container about-container">
+            <div class="about-content">
+                <h2 class="fade-in">About Us</h2>
+                <p class="fade-in">Tell your story here. Talk about how your company started, your mission, and your values. This helps build trust with your visitors and gives them a reason to connect with your brand.</p>
+                <p class="fade-in">Continue describing what makes your company unique and why customers should choose you over competitors.</p>
+                <a href="#contact" class="btn fade-in scroll-link">Contact Us</a>
+            </div>
+            <div class="about-image fade-in">
+                <!-- Replace with your about image -->
+                <img src="/api/placeholder/600/400" alt="About Us Image">
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== GALLERY SECTION ===== -->
+    <section id="gallery" class="gallery">
+        <div class="container">
+            <div class="section-title">
+                <h2 class="fade-in">Photo Gallery</h2>
+                <p class="fade-in">A glimpse into our world and work.</p>
+            </div>
+            <div class="gallery-grid fade-in">
+                <!-- Actual images from the photos directory -->
+                <div class="gallery-item"><img src="./photos/IMG_4800.png" alt="IMG_4800.png"></div>
+                <div class="gallery-item"><img src="./photos/IMG_4801.png" alt="IMG_4801.png"></div>
+                <div class="gallery-item"><img src="./photos/IMG_4802.png" alt="IMG_4802.png"></div>
+                <div class="gallery-item"><img src="./photos/IMG_4821.png" alt="IMG_4821.png"></div>
+                <div class="gallery-item"><img src="./photos/IMG_4822.png" alt="IMG_4822.png"></div>
+                <div class="gallery-item"><img src="./photos/IMG_4823.png" alt="IMG_4823.png"></div>
+                <div class="gallery-item"><img src="./photos/IMG_4825.png" alt="IMG_4825.png"></div>
+                <div class="gallery-item"><img src="./photos/IMG_4832.png" alt="IMG_4832.png"></div>
+                <!-- These will be hidden initially by the JS logic (or by data-hidden attribute if preferred) -->
+                 <div class="gallery-item" data-hidden="true"><img src="./photos/IMG_4800.jpg" alt="IMG_4834.png"></div>
+                 <div class="gallery-item" data-hidden="true"><img src="/photos/IMG_4837.png" alt="IMG_4837.png"></div>
+                 <div class="gallery-item" data-hidden="true"><img src="/photos/IMG_4838.png" alt="IMG_4838.png"></div>
+                 <div class="gallery-item" data-hidden="true"><img src="/photos/IMG_4841.png" alt="IMG_4841.png"></div>
+                 <!-- Add more gallery items here if you have more converted PNGs -->
+            </div>
+            <div class="gallery-controls fade-in">
+                <button class="btn" id="viewMoreGallery">View More</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CONTACT SECTION ===== -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="contact-title">
+                <h2 class="fade-in">Get In Touch</h2>
+                <p class="fade-in">Have questions? We're here to help.</p>
+            </div>
+            <div class="contact-grid">
+                <!-- Phone -->
+                <div class="contact-item fade-in">
+                    <div class="contact-icon">📱</div>
+                    <h3>Phone</h3>
+                    <p>+1 (123) 456-7890</p>
+                </div>
+
+                <!-- Email -->
+                <div class="contact-item fade-in">
+                    <div class="contact-icon">✉️</div>
+                    <h3>Email</h3>
+                    <p>contact@yourcompany.com</p>
+                </div>
+
+                <!-- Address -->
+                <div class="contact-item fade-in">
+                    <div class="contact-icon">🏢</div>
+                    <h3>Address</h3>
+                    <p>123 Business Street, City, Country</p>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="contact-form fade-in">
+                <h3>Send Us a Message</h3>
+                <form id="contactForm" action="mailto:eddygutierrez175@gmail.com" method="GET" enctype="text/plain">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Your Email (for reply)</label>
+                        <input type="email" id="email" name="from" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" name="body" class="form-control" required></textarea>
+                    </div>
+                    <button type="submit" class="btn" id="submitButton" formtarget="_blank">Send Message via Email Client</button>
+                </form>
+                <!-- Form feedback messages removed as they are not used with mailto: -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER SECTION ===== -->
+    <footer>
+        <div class="container footer-container">
+            <!-- Company Info -->
+            <div class="footer-col">
+                <div class="logo">
+                    <!-- Replace with your logo image -->
+                    <img src="/api/placeholder/120/40" alt="Your Logo">
+                </div>
+                <p>A brief description of your company and its mission. This helps visitors understand what you're all about.</p>
+                <!-- Social Media Links -->
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook">FB</a>
+                    <a href="#" aria-label="Twitter">TW</a>
+                    <a href="#" aria-label="Instagram">IG</a>
+                    <a href="#" aria-label="LinkedIn">LI</a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#home" class="scroll-link">Home</a></li>
+                    <li><a href="#features" class="scroll-link">Features</a></li>
+                    <li><a href="#about" class="scroll-link">About</a></li>
+                    <li><a href="#contact" class="scroll-link">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Services -->
+            <div class="footer-col">
+                <h3>Our Services</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Service One</a></li>
+                    <li><a href="#">Service Two</a></li>
+                    <li><a href="#">Service Three</a></li>
+                    <li><a href="#">Service Four</a></li>
+                </ul>
+            </div>
+
+            <!-- Legal -->
+            <div class="footer-col">
+                <h3>Legal</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookies Policy</a></li>
+                    <li><a href="#">Disclaimer</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="copyright">
+            <div class="container">
+                <p>&copy; 2025 Your Company Name. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

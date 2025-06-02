@@ -1,0 +1,246 @@
+# Landing Page Customization Guide
+
+This guide highlights the key parts of your landing page template that you can easily customize to match your brand and content needs.
+
+## Color Scheme Customization
+
+The template uses CSS variables for consistent colors throughout the site. You can find these at the top of `css/style.css`.
+
+```css
+/* Light Mode Colors (css/style.css, lines 2-20) */
+--primary-color: #0071e3;         /* Main blue accent color */
+--primary-color-rgb: 0, 113, 227; /* RGB version for transparency effects */
+--secondary-color: #f7f7f9;       /* Light background for sections */
+--accent-color: #0091ff;          /* Secondary blue shade */
+--text-color: #1d1d1f;            /* Main text color */
+--text-secondary: #86868b;        /* Secondary/description text */
+--background-color: #ffffff;      /* Main background */
+--card-background: rgba(245, 245, 247, 0.6); /* Card backgrounds with transparency */
+--border-color: rgba(210, 210, 215, 0.3);    /* Borders for cards and elements */
+--shadow-color: rgba(0, 0, 0, 0.08);         /* Box shadow for elements */
+--success-color: #28cd41;                   /* Color for success messages/indicators */
+--glass-background: rgba(255, 255, 255, 0.5); /* Glass effect background */
+--glass-border: rgba(255, 255, 255, 0.2);   /* Glass effect borders */
+--glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); /* Shadow for glass elements */
+
+/* Spacing & Layout (css/style.css, lines 22-25) */
+--section-padding: 100px 0;
+--container-width: 100%; /* Max container width can be adjusted here if not using 95% default */
+--border-radius: 12px;
+--transition-speed: 0.3s; /* Base speed for animations and transitions */
+
+/* Dark Mode Colors (css/style.css, lines 28-40) */
+[data-theme="dark"] {
+    --primary-color: #2997ff;
+    --primary-color-rgb: 41, 151, 255;
+    --secondary-color: #1a1a1e;
+    --accent-color: #47a9ff;
+    --text-color: #f5f5f7;
+    --text-secondary: #a1a1a6;
+    --background-color: #111114;
+    --card-background: rgba(38, 38, 42, 0.7);
+    --border-color: rgba(80, 80, 90, 0.3);
+    --shadow-color: rgba(0, 0, 0, 0.4);
+    --glass-background: rgba(38, 38, 42, 0.65);
+    --glass-border: rgba(80, 80, 90, 0.25);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+```
+
+Modify these values in `css/style.css` to match your brand colors. Remember to update both light and dark mode color schemes for a consistent user experience.
+
+## Text Content Replacement
+
+All text content is within `index.html`. Here are the main areas:
+
+### Header Section (index.html, around line 35)
+```html
+<div class="logo">
+    <img src="/api/placeholder/120/40" alt="Your Logo"> <!-- Or path to your logo -->
+    <span>Company</span> <!-- Your company name -->
+</div>
+<nav>
+    <ul>
+        <li><a href="#home" class="scroll-link">Home</a></li>
+        <!-- Navigation labels can be changed here (lines 44-47) -->
+    </ul>
+</nav>
+```
+
+### Hero Section (index.html, around line 53)
+```html
+<h1 class="fade-in">Your Compelling Headline Here</h1> <!-- (line 55) -->
+<p class="fade-in">A brief description of your product or service...</p> <!-- (line 56) -->
+```
+
+### Features Section (index.html, around line 67)
+```html
+<div class="features-title">
+    <h2 class="fade-in">Our Features</h2> <!-- (line 69) -->
+    <p class="fade-in">Discover what makes our product special.</p> <!-- (line 70) -->
+</div>
+
+<!-- Feature Cards (lines 74-94) -->
+<div class="feature-card fade-in">
+    <div class="feature-icon">
+        <img src="/api/placeholder/40/40" alt="Feature 1"> <!-- Icon for feature -->
+    </div>
+    <h3>Feature One</h3>
+    <p>A brief description of this feature...</p>
+</div>
+<!-- Repeat for Feature Two and Feature Three -->
+```
+
+### About Section (index.html, around line 98)
+```html
+<div class="about-content">
+    <h2 class="fade-in">About Us</h2> <!-- (line 100) -->
+    <p class="fade-in">Tell your story here...</p> <!-- (line 101) -->
+    <p class="fade-in">Continue describing what makes your company unique...</p> <!-- (line 102) -->
+</div>
+```
+
+### Contact Section (index.html, around line 112)
+```html
+<div class="contact-title">
+    <h2 class="fade-in">Get In Touch</h2> <!-- (line 114) -->
+    <p class="fade-in">Have questions? We're here to help.</p> <!-- (line 115) -->
+</div>
+
+<!-- Contact Info (lines 119-137) -->
+<div class="contact-item fade-in">
+    <div class="contact-icon">📱</div>
+    <h3>Phone</h3>
+    <p>+1 (123) 456-7890</p>
+</div>
+<!-- Similar blocks for Email and Address -->
+```
+
+### Footer Section (index.html, around line 174)
+```html
+<!-- Company Info & Logo (lines 177-182) -->
+<div class="footer-col">
+    <div class="logo">
+        <img src="/api/placeholder/120/40" alt="Your Logo">
+    </div>
+    <p>A brief description of your company and its mission.</p>
+</div>
+
+<!-- Footer Links (Quick Links, Services, Legal - lines 185-220) -->
+
+<!-- Copyright (lines 223-227) -->
+<div class="copyright">
+    <div class="container">
+        <p>&copy; 2025 Your Company Name. All Rights Reserved.</p>
+    </div>
+</div>
+```
+
+## Image Replacement
+
+Replace all placeholder images in `index.html` with your own. Consider optimizing images for the web.
+
+1.  **Logo** (Header: line 38, Footer: line 179):
+    ```html
+    <img src="/api/placeholder/120/40" alt="Your Logo">
+    ```
+    It's recommended to use an SVG or a transparent PNG for your logo.
+
+2.  **Hero Image** (index.html, line 62):
+    ```html
+    <img src="/api/placeholder/1000/600" alt="Hero Image">
+    ```
+
+3.  **Feature Icons** (index.html, lines 76, 83, 90):
+    ```html
+    <img src="/api/placeholder/40/40" alt="Feature 1">
+    ```
+    Small, clear icons work best here.
+
+4.  **About Image** (index.html, line 107):
+    ```html
+    <img src="/api/placeholder/600/400" alt="About Us Image">
+    ```
+
+Replace each `/api/placeholder/{width}/{height}` (or any placeholder path) with the path to your image file (e.g., `images/my-logo.svg`).
+
+## Form Customization
+
+The contact form is in `index.html` (around line 140).
+
+It is now configured to use the user's default email client via a `mailto:` link.
+When the "Send Message via Email Client" button is clicked, it will attempt to open the user's email application with the "To", "Subject", and "Body" fields pre-filled.
+
+**Key attributes in the `<form>` tag:**
+- `action="mailto:eddygutierrez175@gmail.com"`: This specifies your email address as the recipient.
+- `method="GET"`: Standard method for `mailto:` links.
+- `enctype="text/plain"`: Ensures the form data is formatted as plain text in the email body.
+
+**Input field `name` attributes for `mailto:`:**
+- The email input `name="from"` is used to suggest the sender's email to the email client (though the actual "From" field will be the user's own email address).
+- The subject input `name="subject"` populates the email's subject line.
+- The message textarea `name="body"` populates the email's body content.
+
+```html
+<form id="contactForm" action="mailto:eddygutierrez175@gmail.com" method="GET" enctype="text/plain">
+    <div class="form-group">
+        <label for="name">Your Name</label>
+        <input type="text" id="name" name="name" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="email">Your Email (for reply)</label>
+        <input type="email" id="email" name="from" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="subject">Subject</label>
+        <input type="text" id="subject" name="subject" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="message">Your Message</label>
+        <textarea id="message" name="body" class="form-control" required></textarea>
+    </div>
+    <button type="submit" class="btn" id="submitButton">Send Message via Email Client</button>
+</form>
+```
+No JavaScript is used for this form submission method. The success or failure of sending the email depends on the user's email client setup.
+
+## Photo Gallery (New Section)
+
+A new "Photo Gallery" section has been added to `index.html` (around line 170, before the Contact section) and styled in `css/style.css` (around line 680).
+JavaScript in `js/script.js` (around line 140) handles the "View More" functionality.
+
+**Adding Photos:**
+1.  **Convert Images:** Ensure your photos are in a web-friendly format (JPG, PNG, WebP). HEIC files need to be converted.
+2.  **Place Images:** Add your converted image files to the `photos/` directory (or your preferred image directory).
+3.  **Update HTML:** In `index.html`, within the `<div class="gallery-grid">`:
+    *   Replace the placeholder `<img>` tags with your actual images.
+    *   Update the `src` attribute to the correct path (e.g., `photos/my-image.jpg`).
+    *   Provide descriptive `alt` text for each image for accessibility.
+
+    ```html
+    <!-- Example of a gallery item -->
+    <div class="gallery-item">
+        <img src="photos/your-image-name.jpg" alt="Description of your image">
+    </div>
+    ```
+
+**Controlling Initial Visibility:**
+*   The gallery is set to initially display **8** items. This is controlled by the `initiallyVisibleItems` variable in `js/script.js`.
+*   If you add more than 8 images, any images beyond the 8th will automatically be hidden and revealed by the "View More" button.
+*   If you want specific images (even within the first 8) to be part of the initially hidden set, or if you want to explicitly mark items beyond the 8th, you can add the `data-hidden="true"` attribute to the `gallery-item` div:
+    ```html
+    <div class="gallery-item" data-hidden="true">
+        <img src="photos/another-image.jpg" alt="Another image">
+    </div>
+    ```
+*   The "View More" button will toggle to "View Less" and will hide/show accordingly.
+*   The button will automatically hide if all items are visible or if there are 8 or fewer items in total.
+
+**Styling:**
+*   The CSS uses `object-fit: cover;` to ensure images fill their grid cell while maintaining aspect ratio. This is good for a uniform grid with differently sized source images.
+*   The grid is responsive and will adjust the number of columns based on screen size.
+*   Default aspect ratio for items is 1:1 (square), but `object-fit: cover` handles various image dimensions effectively within these containers.
+
+## Button Text and Links
+
+Update button text and `
