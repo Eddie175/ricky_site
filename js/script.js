@@ -324,6 +324,7 @@ class PhotoGallery {
         };
         
         this.items = [];
+        this.isExpanded = false;
         this.init();
     }
     
@@ -385,11 +386,15 @@ class PhotoGallery {
             return;
         }
         
+        // Mark items as initially hidden but keep them visible for loading
         this.items.forEach((item, index) => {
-            const shouldHide = index >= this.config.initialVisible;
-            item.style.display = shouldHide ? 'none' : 'block';
-            item.toggleAttribute('data-initially-hidden', shouldHide);
+            if (index >= this.config.initialVisible) {
+                item.classList.add('gallery-item-hidden');
+            }
         });
+        
+        // Update grid to show only initial items
+        this.updateGridDisplay();
         
         if (this.items.length <= this.config.initialVisible) {
             this.hideViewMoreButton();
@@ -399,16 +404,26 @@ class PhotoGallery {
         }
     }
     
+    updateGridDisplay() {
+        // Use CSS to control visibility instead of display: none
+        this.grid.setAttribute('data-expanded', this.isExpanded.toString());
+    }
+    
     toggleViewMore() {
-        const isShowingAll = this.viewMoreBtn.textContent === 'View Less';
+        this.isExpanded = !this.isExpanded;
+        this.updateGridDisplay();
         
-        this.items.forEach((item, index) => {
-            if (index >= this.config.initialVisible) {
-                item.style.display = isShowingAll ? 'none' : 'block';
-            }
-        });
+        if (this.isExpanded) {
+            this.items.forEach(item => item.classList.remove('gallery-item-hidden'));
+        } else {
+            this.items.forEach((item, index) => {
+                if (index >= this.config.initialVisible) {
+                    item.classList.add('gallery-item-hidden');
+                }
+            });
+        }
         
-        this.viewMoreBtn.textContent = isShowingAll ? 'View More' : 'View Less';
+        this.viewMoreBtn.textContent = this.isExpanded ? 'View Less' : 'View More';
     }
     
     hideViewMoreButton() {

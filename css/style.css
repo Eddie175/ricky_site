@@ -613,6 +613,25 @@ input:checked + .toggle-slider ~ .toggle-icons i:last-child {
     margin-bottom: var(--space-xl);
 }
 
+/* Gallery item hidden state - allows loading while invisible */
+.gallery-item-hidden {
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* When gallery is expanded, show all items */
+.gallery-grid[data-expanded="true"] .gallery-item-hidden {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transition: opacity 0.3s ease !important;
+}
+
 .gallery-item {
     background-color: var(--card-background);
     border-radius: var(--border-radius);
