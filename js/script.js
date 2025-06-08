@@ -363,6 +363,16 @@ class PhotoGallery {
         img.src = url;
         img.alt = `Handyman project example ${index}`;
         img.style.cursor = 'pointer';
+        
+        // Add loading state management
+        img.addEventListener('load', () => {
+            item.classList.add('loaded');
+        });
+        
+        img.addEventListener('error', () => {
+            item.classList.add('loaded'); // Still remove skeleton on error
+        });
+        
         img.addEventListener('click', () => this.imageModal.open(url));
         
         item.appendChild(img);
