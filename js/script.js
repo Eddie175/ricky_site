@@ -1,153 +1,430 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-    const mobileNavMenu = document.querySelector('header nav');
-    const navLinks = document.querySelectorAll('nav ul li a:not(.btn), .mobile-nav-menu ul li a:not(.btn)');
-    const sections = document.querySelectorAll('section[id]');
-    const themeToggle = document.getElementById('theme-toggle');
-    const header = document.querySelector('header');
+/**
+ * Mobile Menu Handler
+ */
+class MobileMenu {
+    constructor() {
+        this.toggle = document.querySelector('.mobile-menu-toggle');
+        this.nav = document.querySelector('header nav');
+        this.header = document.querySelector('header');
+        this.isOpen = false;
+        
+        this.init();
+    }
+    
+    init() {
+        if (!this.toggle || !this.nav) return;
+        
+        this.toggle.addEventListener('click', () => this.toggleMenu());
+        document.addEventListener('click', (e) => this.handleOutsideClick(e));
+    }
+    
+    toggleMenu() {
+        this.isOpen = !this.isOpen;
+        this.nav.classList.toggle('active', this.isOpen);
+        this.toggle.textContent = this.isOpen ? '✕' : '☰';
+        this.header.classList.toggle('header-solid-bg', this.isOpen);
+        document.body.style.overflow = this.isOpen ? 'hidden' : '';
+    }
+    
+    closeMenu() {
+        if (!this.isOpen) return;
+        this.isOpen = false;
+        this.nav.classList.remove('active');
+        this.toggle.textContent = '☰';
+        this.header.classList.remove('header-solid-bg');
+        document.body.style.overflow = '';
+    }
+    
+    handleOutsideClick(e) {
+        if (this.isOpen && 
+            !this.nav.contains(e.target) && 
+            !this.toggle.contains(e.target)) {
+            this.closeMenu();
+        }
+    }
+}
 
-    /* Testimonial Slider (Commented out as not present in current HTML)
-    const testimonialSlides = document.querySelector('.testimonial-slides');
-    const prevButton = document.querySelector('.prev-slide');
-    const nextButton = document.querySelector('.next-slide');
-    let currentSlide = 0;
-    */
-
-    // Sticky header scroll listener removed as header is always styled
-    /*
-    if (header) {
+/**
+ * Navigation and Smooth Scrolling Handler
+ */
+class Navigation {
+    constructor(mobileMenu) {
+        this.mobileMenu = mobileMenu;
+        this.links = document.querySelectorAll('nav ul li a:not(.btn), .mobile-nav-menu ul li a:not(.btn)');
+        this.sections = document.querySelectorAll('section[id]');
+        this.header = document.querySelector('header');
+        this.isScrolling = false; // Flag to prevent scroll interference
+        
+        this.init();
+    }
+    
+    init() {
+        this.links.forEach(link => {
+            link.addEventListener('click', (e) => this.handleLinkClick(e, link));
+        });
+        
+        // Throttle scroll events to improve performance and prevent conflicts
+        let scrollTimeout;
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) { 
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-    }
-    */
-
-    // Mobile Menu Toggle
-    if (mobileMenuToggle && mobileNavMenu) {
-        mobileMenuToggle.addEventListener('click', () => {
-            mobileNavMenu.classList.toggle('active');
-            mobileMenuToggle.textContent = mobileNavMenu.classList.contains('active') ? '✕' : '☰';
+            // Don't update during programmatic scrolling
+            if (this.isScrolling) return;
             
-            // Prevent body scroll when menu is open
-            document.body.style.overflow = mobileNavMenu.classList.contains('active') ? 'hidden' : '';
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (mobileNavMenu.classList.contains('active') && 
-                !mobileNavMenu.contains(e.target) && 
-                !mobileMenuToggle.contains(e.target)) {
-                mobileNavMenu.classList.remove('active');
-                mobileMenuToggle.textContent = '☰';
-                document.body.style.overflow = '';
+            if (scrollTimeout) {
+                clearTimeout(scrollTimeout);
             }
+            scrollTimeout = setTimeout(() => this.updateActiveLink(), 50);
+        });
+        
+        this.updateActiveLink(); // Initial call
+    }
+    
+    handleLinkClick(e, link) {
+        if (!link.hash) return;
+        
+        e.preventDefault();
+        const target = document.querySelector(link.hash);
+        if (!target) return;
+        
+        // Immediately update the active link
+        this.setActiveLink(link.hash.substring(1));
+        
+        // Disable scroll updates during smooth scrolling
+        this.isScrolling = true;
+        
+        const headerHeight = this.header.offsetHeight;
+        const targetPosition = target.offsetTop - headerHeight;
+        
+        window.scrollTo({
+            top: targetPosition,
+            behavior: "smooth"
+        });
+        
+        // Re-enable scroll updates after smooth scroll completes
+        setTimeout(() => {
+            this.isScrolling = false;
+        }, 1000); // Give enough time for smooth scroll to complete
+        
+        this.mobileMenu.closeMenu();
+    }
+    
+    setActiveLink(sectionId) {
+        this.links.forEach(link => {
+            const isActive = link.getAttribute('href') === `#${sectionId}`;
+            link.classList.toggle('active', isActive);
         });
     }
-
-    // Smooth Scrolling & Active Nav Link Highlighting
-    function setActiveLink() {
+    
+    updateActiveLink() {
         let currentSectionId = '';
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            if (pageYOffset >= sectionTop - 100) { // Adjusted for header height + a bit more
+        let scrollPosition = window.pageYOffset;
+        
+        // Find which section we're currently in
+        this.sections.forEach(section => {
+            const sectionTop = section.offsetTop - 150; // Adjusted offset
+            const sectionBottom = sectionTop + section.offsetHeight;
+            
+            if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
                 currentSectionId = section.getAttribute('id');
             }
         });
-
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${currentSectionId}`) {
-                link.classList.add('active');
-            }
-        });
+        
+        // If we're at the very top of the page (before any sections)
+        if (scrollPosition < 150) {
+            currentSectionId = 'home';
+        }
+        
+        // Only update if we have a valid section
+        if (currentSectionId) {
+            this.setActiveLink(currentSectionId);
+        }
     }
+}
 
-    navLinks.forEach(link => {
-        link.addEventListener('click', function (e) {
-            if (this.hash !== "") {
-                e.preventDefault();
-                const hash = this.hash;
-                const targetElement = document.querySelector(hash);
-                if (targetElement) {
-                    const headerOffset = document.querySelector('header').offsetHeight;
-                    const elementPosition = targetElement.offsetTop;
-                    const offsetPosition = elementPosition - headerOffset;
-
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: "smooth"
-                    });
-
-                    // Close mobile menu if open and link is clicked
-                    if (mobileNavMenu && mobileNavMenu.classList.contains('active')) {
-                        mobileNavMenu.classList.remove('active');
-                        mobileMenuToggle.textContent = '☰';
-                    }
-                }
-            }
+/**
+ * Theme Toggle Handler
+ */
+class ThemeToggler {
+    constructor() {
+        this.toggle = document.getElementById('theme-toggle');
+        this.init();
+    }
+    
+    init() {
+        if (!this.toggle) return;
+        
+        this.toggle.addEventListener('change', () => {
+            const theme = this.toggle.checked ? 'dark' : 'light';
+            this.setTheme(theme);
         });
-    });
-
-    window.addEventListener('scroll', setActiveLink);
-    setActiveLink(); // Initial call to set active link on page load
-
-    // Theme Switcher
-    function setTheme(theme) {
+        
+        // Load saved theme or default to system preference
+        const savedTheme = localStorage.getItem('theme') || 
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        this.setTheme(savedTheme);
+    }
+    
+    setTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
         localStorage.setItem('theme', theme);
-        if (themeToggle) themeToggle.checked = theme === 'dark';
+        if (this.toggle) this.toggle.checked = theme === 'dark';
     }
+}
 
-    if (themeToggle) {
-        themeToggle.addEventListener('change', () => {
-            setTheme(themeToggle.checked ? 'dark' : 'light');
+/**
+ * Service Card Animation Handler
+ */
+class ServiceCardAnimations {
+    constructor() {
+        this.cards = document.querySelectorAll('.service-card');
+        this.jumpClasses = ['icon-jump-up', 'icon-jump-left', 'icon-jump-right'];
+        this.init();
+    }
+    
+    init() {
+        if (!this.cards.length) return;
+        
+        this.cards.forEach(card => {
+            let touchMoved = false;
+            
+            card.addEventListener('touchstart', () => {
+                touchMoved = false;
+            });
+            
+            card.addEventListener('touchmove', () => {
+                touchMoved = true;
+            });
+            
+            card.addEventListener('touchend', () => {
+                if (!touchMoved) {
+                    this.animateIcon(card);
+                }
+            });
+            
+            card.addEventListener('click', () => {
+                this.animateIcon(card);
+            });
         });
     }
+    
+    animateIcon(card) {
+        const icon = card.querySelector('.service-icon i');
+        if (!icon) return;
+        
+        // Remove any existing animation classes
+        this.jumpClasses.forEach(cls => icon.classList.remove(cls));
+        
+        // Randomly select a jump animation
+        const randomClass = this.jumpClasses[Math.floor(Math.random() * this.jumpClasses.length)];
+        icon.classList.add(randomClass);
+        
+        // Remove the class after animation duration
+        setTimeout(() => {
+            icon.classList.remove(randomClass);
+        }, 800);
+    }
+}
 
-    // Load saved theme or default to light
-    const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    setTheme(savedTheme);
+/**
+ * Fade-in Animation Observer
+ */
+class AnimationObserver {
+    constructor() {
+        this.elements = document.querySelectorAll('.fade-in');
+        this.observer = null;
+        this.init();
+    }
+    
+    init() {
+        if (!this.elements.length) return;
+        
+        const options = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        this.observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                    this.observer.unobserve(entry.target);
+                }
+            });
+        }, options);
+        
+        this.elements.forEach(el => this.observer.observe(el));
+    }
+}
 
-    // Fade-in animations for elements
-    const fadeInElements = document.querySelectorAll('.fade-in');
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
+/**
+ * Image Modal Handler
+ */
+class ImageModal {
+    constructor() {
+        this.modal = document.getElementById('imageModal');
+        this.image = document.getElementById('modalImage');
+        this.closeBtn = document.getElementById('modalCloseButton');
+        
+        this.init();
+    }
+    
+    init() {
+        if (!this.modal) return;
+        
+        this.closeBtn?.addEventListener('click', () => this.close());
+        this.modal.addEventListener('click', (e) => {
+            if (e.target === this.modal) this.close();
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.isOpen()) this.close();
+        });
+    }
+    
+    open(src) {
+        if (!this.modal || !this.image) return;
+        
+        this.image.src = src;
+        this.image.alt = this.generateAltText(src);
+        this.modal.classList.add('active');
+        this.modal.setAttribute('aria-hidden', 'false');
+    }
+    
+    close() {
+        this.modal?.classList.remove('active');
+        this.modal?.setAttribute('aria-hidden', 'true');
+    }
+    
+    isOpen() {
+        return this.modal?.classList.contains('active') || false;
+    }
+    
+    generateAltText(src) {
+        const match = src.match(/photo_(\d+)\.jpeg$/);
+        return match ? `Full Size Image of Ricky's Work - Project ${match[1]}` : "Full Size Image of Ricky's Work";
+    }
+}
 
-    const observer = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate');
-                obs.unobserve(entry.target);
+/**
+ * Photo Gallery Handler
+ */
+class PhotoGallery {
+    constructor(imageModal) {
+        this.imageModal = imageModal;
+        this.grid = document.querySelector('.gallery-grid');
+        this.viewMoreBtn = document.getElementById('viewMoreGallery');
+        
+        this.config = {
+            basePath: './photos/',
+            prefix: 'photo_',
+            extension: '.jpeg',
+            maxToCheck: 50,
+            initialVisible: 8,
+            maxConsecutiveMisses: 3
+        };
+        
+        this.items = [];
+        this.init();
+    }
+    
+    async init() {
+        if (!this.grid) return;
+        await this.loadImages();
+        this.setupControls();
+    }
+    
+    async loadImages() {
+        this.grid.innerHTML = '';
+        this.items = [];
+        let consecutiveMisses = 0;
+        
+        for (let i = 1; i <= this.config.maxToCheck; i++) {
+            const url = `${this.config.basePath}${this.config.prefix}${i}${this.config.extension}`;
+            
+            if (await this.imageExists(url)) {
+                consecutiveMisses = 0;
+                const item = this.createGalleryItem(url, i);
+                this.grid.appendChild(item);
+                this.items.push(item);
+            } else {
+                consecutiveMisses++;
+                if (consecutiveMisses >= this.config.maxConsecutiveMisses) break;
+            }
+        }
+        
+        this.refreshGridAnimation();
+    }
+    
+    createGalleryItem(url, index) {
+        const item = document.createElement('div');
+        item.classList.add('gallery-item');
+        
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = `Handyman project example ${index}`;
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', () => this.imageModal.open(url));
+        
+        item.appendChild(img);
+        return item;
+    }
+    
+    setupControls() {
+        if (!this.viewMoreBtn || this.items.length === 0) {
+            this.hideViewMoreButton();
+            return;
+        }
+        
+        this.items.forEach((item, index) => {
+            const shouldHide = index >= this.config.initialVisible;
+            item.style.display = shouldHide ? 'none' : 'block';
+            item.toggleAttribute('data-initially-hidden', shouldHide);
+        });
+        
+        if (this.items.length <= this.config.initialVisible) {
+            this.hideViewMoreButton();
+        } else {
+            this.showViewMoreButton();
+            this.viewMoreBtn.addEventListener('click', () => this.toggleViewMore());
+        }
+    }
+    
+    toggleViewMore() {
+        const isShowingAll = this.viewMoreBtn.textContent === 'View Less';
+        
+        this.items.forEach((item, index) => {
+            if (index >= this.config.initialVisible) {
+                item.style.display = isShowingAll ? 'none' : 'block';
             }
         });
-    }, observerOptions);
-
-    fadeInElements.forEach(el => {
-        observer.observe(el);
-    });
-
-    // ===== Dynamic Photo Gallery =====
-    const galleryGrid = document.querySelector('.gallery-grid');
-    const viewMoreGalleryButton = document.getElementById('viewMoreGallery');
-    const imageModal = document.getElementById('imageModal');
-    const modalImage = document.getElementById('modalImage');
-    const modalCloseButton = document.getElementById('modalCloseButton');
-
-    const photoBasePath = './photos/';
-    const photoPrefix = 'photo_';
-    const photoExtension = '.jpeg';
-    const maxPhotosToCheck = 50; // How many photos to attempt to load (e.g., photo_1.jpeg to photo_50.jpeg)
-    const initiallyVisibleItems = 8;
-    let loadedGalleryItems = []; // To store the actual gallery item DOM elements
-
-    async function imageExists(url) {
+        
+        this.viewMoreBtn.textContent = isShowingAll ? 'View More' : 'View Less';
+    }
+    
+    hideViewMoreButton() {
+        if (this.viewMoreBtn) this.viewMoreBtn.style.display = 'none';
+    }
+    
+    showViewMoreButton() {
+        if (this.viewMoreBtn) {
+            this.viewMoreBtn.style.display = 'inline-block';
+            this.viewMoreBtn.textContent = 'View More';
+        }
+    }
+    
+    refreshGridAnimation() {
+        if (this.grid.classList.contains('animate')) {
+            this.grid.classList.remove('animate');
+            this.grid.style.animationName = 'none';
+            void this.grid.offsetWidth; // Trigger reflow
+            this.grid.style.animationName = 'fadeInAnimation';
+            this.grid.classList.add('animate');
+        } else if (!this.grid.classList.contains('fade-in')) {
+            this.grid.style.opacity = '1';
+        }
+    }
+    
+    async imageExists(url) {
         return new Promise(resolve => {
             const img = new Image();
             img.onload = () => resolve(true);
@@ -155,178 +432,24 @@ document.addEventListener('DOMContentLoaded', () => {
             img.src = url;
         });
     }
+}
 
-    async function loadGalleryImages() {
-        if (!galleryGrid) return;
-        galleryGrid.innerHTML = ''; // Clear any existing items (like placeholders)
-        loadedGalleryItems = [];
-        let consecutiveMisses = 0;
-        const maxConsecutiveMisses = 3; // Stop if 3 images in a row are not found
-
-        for (let i = 1; i <= maxPhotosToCheck; i++) {
-            const photoName = `${photoPrefix}${i}${photoExtension}`;
-            const photoUrl = `${photoBasePath}${photoName}`;
-
-            if (await imageExists(photoUrl)) {
-                consecutiveMisses = 0; // Reset misses if image is found
-                const item = document.createElement('div');
-                item.classList.add('gallery-item');
-                
-                const img = document.createElement('img');
-                img.src = photoUrl;
-                img.alt = `Handyman project example ${i}`;
-                img.style.cursor = 'pointer'; // Add pointer cursor
-
-                img.addEventListener('click', () => openModal(photoUrl));
-
-                item.appendChild(img);
-                galleryGrid.appendChild(item);
-                loadedGalleryItems.push(item);
-            } else {
-                consecutiveMisses++;
-                if (consecutiveMisses >= maxConsecutiveMisses) {
-                    console.log(`Stopping gallery load: ${maxConsecutiveMisses} consecutive images not found, last checked: ${photoName}`);
-                    break; // Stop if too many images are missing in a row
-                }
-            }
-        }
-        setupGalleryControls();
-        // Re-apply fade-in to the grid if it was already observed and animated
-        if (galleryGrid.classList.contains('animate')) {
-            galleryGrid.classList.remove('animate');
-            galleryGrid.style.animationName = 'none';
-            void galleryGrid.offsetWidth; // Trigger reflow
-            galleryGrid.style.animationName = 'fadeInAnimation';
-            galleryGrid.classList.add('animate');
-        } else if (!galleryGrid.classList.contains('fade-in')){
-             // If the grid itself wasn't a fade-in target, ensure it becomes visible.
-             galleryGrid.style.opacity = 1;
-        }
+/**
+ * Main Application Controller
+ */
+class App {
+    constructor() {
+        this.mobileMenu = new MobileMenu();
+        this.navigation = new Navigation(this.mobileMenu);
+        this.themeToggler = new ThemeToggler();
+        this.serviceAnimations = new ServiceCardAnimations();
+        this.animationObserver = new AnimationObserver();
+        this.imageModal = new ImageModal();
+        this.photoGallery = new PhotoGallery(this.imageModal);
     }
+}
 
-    function setupGalleryControls() {
-        if (!viewMoreGalleryButton || loadedGalleryItems.length === 0) {
-            if(viewMoreGalleryButton) viewMoreGalleryButton.style.display = 'none';
-            return;
-        }
-
-        // Initially hide items beyond the initiallyVisibleItems count
-        loadedGalleryItems.forEach((item, index) => {
-            item.style.opacity = '1'; // Ensure opacity is set for transition if any
-            if (index >= initiallyVisibleItems) {
-                item.style.display = 'none';
-                item.setAttribute('data-initially-hidden', 'true');
-            } else {
-                item.style.display = 'block'; // Or your default display for grid items
-                item.removeAttribute('data-initially-hidden');
-            }
-        });
-
-        if (loadedGalleryItems.length <= initiallyVisibleItems) {
-            viewMoreGalleryButton.style.display = 'none'; // Hide button if not enough items
-        } else {
-            viewMoreGalleryButton.style.display = 'inline-block'; // Show the button
-            viewMoreGalleryButton.textContent = 'View More';
-        }
-    }
-    
-    if (viewMoreGalleryButton) {
-        viewMoreGalleryButton.addEventListener('click', () => {
-            const currentlyShowingAll = viewMoreGalleryButton.textContent === 'View Less';
-
-            if (currentlyShowingAll) {
-                // Hide the extra items again
-                loadedGalleryItems.forEach((item, index) => {
-                    if (index >= initiallyVisibleItems) {
-                        item.style.display = 'none';
-                    }
-                });
-                viewMoreGalleryButton.textContent = 'View More';
-            } else {
-                // Show all hidden items
-                loadedGalleryItems.forEach(item => {
-                    if (item.getAttribute('data-initially-hidden') === 'true') {
-                        item.style.display = 'block'; // Or your default display for grid items
-                    }
-                });
-                viewMoreGalleryButton.textContent = 'View Less';
-            }
-        });
-    }
-
-    // ===== Image Modal Functionality (Adapted for Dynamic Gallery) =====
-    function openModal(src) {
-        if (imageModal && modalImage) {
-            modalImage.src = src;
-            // Update alt text based on the image being opened
-            const photoNumberMatch = src.match(/photo_(\d+)\.jpeg$/);
-            if (photoNumberMatch && photoNumberMatch[1]) {
-                modalImage.alt = `Full Size Image of Ricky's Work - Project ${photoNumberMatch[1]}`;
-            } else {
-                modalImage.alt = "Full Size Image of Ricky's Work";
-            }
-            imageModal.classList.add('active');
-        }
-    }
-
-    function closeModal() {
-        if (imageModal) {
-            imageModal.classList.remove('active');
-        }
-    }
-
-    if (modalCloseButton) {
-        modalCloseButton.addEventListener('click', closeModal);
-    }
-
-    if (imageModal) {
-        imageModal.addEventListener('click', (e) => {
-            if (e.target === imageModal) {
-                closeModal();
-            }
-        });
-    }
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && imageModal && imageModal.classList.contains('active')) {
-            closeModal();
-        }
-    });
-
-    // Initialize dynamic gallery loading
-    if (galleryGrid) {
-        loadGalleryImages();
-    }
-
+// Initialize the application when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    new App();
 });
-
-// Ensure animations are re-triggered if elements become visible again (e.g. through tab switching)
-// This is a simple approach; more complex scenarios might need a different strategy.
-// document.addEventListener("visibilitychange", () => {
-//     if (document.visibilityState === "visible") {
-//         fadeInElements.forEach(el => {
-//             // Reset animation if it was previously applied and element is not intersecting
-//             // This logic might need refinement based on specific needs
-//             if (el.classList.contains('animate') && !isElementInViewport(el)) {
-//                 el.classList.remove('animate');
-//                 el.style.opacity = 0; // Reset opacity
-//                 el.style.transform = 'translateY(20px)'; // Reset transform
-//             }
-//             // Re-observe if not already animated or if it was reset
-//             if (!el.classList.contains('animate')) {
-//                 observer.observe(el);
-//             }
-//         });
-//     }
-// });
-
-// Helper function to check if element is in viewport (simplified)
-// function isElementInViewport(el) {
-//     const rect = el.getBoundingClientRect();
-//     return (
-//         rect.top >= 0 &&
-//         rect.left >= 0 &&
-//         rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-//         rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-//     );
-// } 

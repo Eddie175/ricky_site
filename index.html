@@ -4,17 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lil Man's Handy Hands - Elk Grove Handyman Services</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css" integrity="sha512-csw0Ma4oXCAgd/1PwsNfiKbwGfxnGtjRcHNEBTizlnMdpCSVTgXTLffhGLtnBFGU1NffSHTaV5FPTmlV2gNn0Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- ===== HEADER SECTION ===== -->
+    <!-- Header -->
     <header>
         <div class="container header-container">
             <div class="logo">
-                <!-- Replace with your logo image -->
-                <img src="/photos/logo.png" alt="Lil Man's Handy Hands Logo">
+                <img src="photos/logo.png" alt="Lil Man's Handy Hands Logo">
             </div>
             <div class="header-actions">
                 <button class="mobile-menu-toggle" aria-label="Toggle Menu">☰</button>
@@ -22,16 +20,16 @@
                     <ul>
                         <li><a href="#home" class="scroll-link">Home</a></li>
                         <li><a href="#services" class="scroll-link">Services</a></li>
-                        <li><a href="#about" class="scroll-link">About Ricky</a></li>
+                        <li><a href="#about" class="scroll-link">About Rickie</a></li>
                         <li><a href="#gallery" class="scroll-link">Our Work</a></li>
                         <li><a href="#contact" class="scroll-link">Contact</a></li>
                         <li class="theme-switcher-li">
                             <label class="toggle-switch" for="theme-toggle">
                                 <span class="toggle-icons">
-                                    <span>☀️</span>
-                                    <span>🌙</span>
+                                    <i class="fas fa-lightbulb" aria-hidden="true"></i>
+                                    <i class="fas fa-moon"></i>
                                 </span>
-                                <input type="checkbox" id="theme-toggle">
+                                <input type="checkbox" id="theme-toggle" aria-label="Toggle dark mode">
                                 <span class="toggle-slider"></span>
                             </label>
                         </li>
@@ -41,223 +39,222 @@
         </div>
     </header>
 
-    <!-- ===== HERO SECTION ===== -->
-    <section id="home" class="hero">
-        <div class="container">
-            <h1 class="fade-in">Your Trusted Local Handyman in Elk Grove</h1>
-            <p class="fade-in">Lil Man's Handy Hands is here for all your home repair and improvement needs. Ricky provides reliable, quality service for Elk Grove and surrounding areas.</p>
-            <div class="hero-buttons fade-in">
-                <a href="#services" class="btn scroll-link">See Our Services</a>
-                <a href="#contact" class="btn btn-secondary scroll-link">Get a Free Quote</a>
+    <!-- Hero Section -->
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <h1 class="fade-in" id="main-header">Your Trusted Local Handyman Across Elk Grove and All of Sacramento County</h1>
+                <p class="fade-in">Lil Man's Handy Hands is here for all your home repair and improvement needs. Rickie provides reliable, quality service for Elk Grove and all of Sacramento County.</p>
+                <div class="hero-buttons fade-in">
+                    <a href="#services" class="btn scroll-link">See Our Services</a>
+                    <a href="#contact" class="btn btn-secondary scroll-link">Contact Us</a>
+                </div>
+                <!-- 
+                <div class="hero-image fade-in">
+                    <img src="photos/handyman.jpeg" alt="Rickie - The Handyman">
+                </div>
+                -->
             </div>
+        </section>
 
-            <!-- Hero image -->
-            <div class="hero-image fade-in">
-                <img src="photos/handyman.jpeg" alt="Ricky - The Handyman">
-            </div>
-        </div>
-    </section>
+        <!-- Services Section -->
+        <section id="services" class="services">
+            <div class="container">
+                <div class="section-title">
+                    <h2 class="fade-in">Handyman Services We Offer</h2>
+                    <p class="fade-in">No job is too small for Lil Man's Handy Hands! Rickie specializes in cabinet repairs and painting, along with other services to help you with:</p>
+                </div>
+                <div class="services-grid">
+                    <article class="card service-card fade-in">
+                        <div class="service-icon">
+                            <i class="fas fa-wrench" aria-hidden="true"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>General Home Repairs</h3>
+                            <p>From leaky faucets to drywall patches, Rickie handles a wide variety of common household repairs quickly and efficiently.</p>
+                        </div>
+                    </article>
 
-    <!-- ===== SERVICES SECTION (Formerly FEATURES) ===== -->
-    <section id="services" class="features">
-        <div class="container">
-            <div class="features-title section-title">
-                <h2 class="fade-in">Handyman Services We Offer</h2>
-                <p class="fade-in">No job is too small for Lil Man's Handy Hands! Here are some of the things Ricky can help you with:</p>
+                    <article class="card service-card fade-in">
+                        <div class="service-icon">
+                            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Fixture Installation</h3>
+                            <p>Need a new light fixture, ceiling fan, or sink installed? Rickie has the expertise to get it done right.</p>
+                        </div>
+                    </article>
+
+                    <article class="card service-card fade-in">
+                        <div class="service-icon">
+                            <i class="fas fa-hammer" aria-hidden="true"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Cabinet Repairs</h3>
+                            <p>Rickie specializes in professional cabinet repairs, restoring and enhancing your home with precision and care.</p>
+                        </div>
+                    </article>
+
+                    <article class="card service-card fade-in">
+                        <div class="service-icon">
+                            <i class="fas fa-paint-roller" aria-hidden="true"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Painting Services</h3>
+                            <p>From interior refreshes to exterior updates, Rickie's painting expertise brings a fresh look to your space.</p>
+                        </div>
+                    </article>
+                </div>
             </div>
-            <div class="features-grid">
-                <!-- Service 1 -->
-                <div class="card feature-card fade-in hvr-float">
-                    <div class="feature-icon">
-                        <i class="fas fa-tools"></i>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="container">
+                <div class="about-container">
+                    <div class="about-content">
+                        <h2 class="fade-in">Meet Rickie - Your Local Handyman</h2>
+                        <p class="fade-in">Hi, I'm Rickie, the owner and operator of Lil Man's Handy Hands. As your neighbor in the Elk Grove and Sacramento County community, I started this business to provide honest, reliable handyman services that you can count on.</p>
+                        <p class="fade-in">I take pride in my work and am committed to delivering high-quality craftsmanship on every job, big or small. My goal is to make your life easier by taking care of those to-do list items that you don't have the time or tools for. When you hire Lil Man's Handy Hands, you're supporting a local business dedicated to serving our community.</p>
+                        <a href="#contact" class="btn fade-in scroll-link">Get in Touch</a>
                     </div>
-                    <div class="feature-card-text-content">
-                        <h3>General Home Repairs</h3>
-                        <p>From leaky faucets to drywall patches, Ricky handles a wide variety of common household repairs quickly and efficiently.</p>
+                    <div class="about-image fade-in">
+                        <img src="photos/rickie.jpeg" alt="Rickie - Lil Man's Handy Hands">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="gallery">
+            <div class="container">
+                <div class="section-title">
+                    <h2 class="fade-in">Recent Work</h2>
+                    <p class="fade-in">Take a look at some of the projects Rickie has completed, including his specialized cabinet repairs and painting, for satisfied customers all across Elk Grove and Sacramento County.</p>
+                </div>
+                <div class="gallery-grid fade-in" role="img" aria-label="Gallery of completed handyman projects">
+                    <!-- Gallery items will be loaded dynamically by JavaScript -->
+                </div>
+                <div class="gallery-controls fade-in">
+                    <button class="btn" id="viewMoreGallery">View More Projects</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact">
+            <div class="container">
+                <div class="section-title">
+                    <h2 class="fade-in">Ready to Get Started?</h2>
+                    <p class="fade-in">Contact Rickie at Lil Man's Handy Hands today for your next home project in Elk Grove and all of Sacramento County!</p>
+                </div>
+                
+                <div class="contact-grid">
+                    <div class="card contact-item fade-in">
+                        <div class="contact-icon" aria-hidden="true">📱</div>
+                        <h3>Call Rickie</h3>
+                        <a href="tel:+19167760889">+1 (916) 776-0889</a>
+                    </div>
+
+                    <div class="card contact-item fade-in">
+                        <div class="contact-icon" aria-hidden="true">✉️</div>
+                        <h3>Email Us</h3>
+                        <a href="#contact-form">lilmanshandyhands@gmail.com</a>
+                    </div>
+
+                    <div class="card contact-item fade-in">
+                        <div class="contact-icon" aria-hidden="true">📍</div>
+                        <h3>Service Area</h3>
+                        <p>Serving Elk Grove & all of Sacramento County</p>
                     </div>
                 </div>
 
-                <!-- Service 2 -->
-                <div class="card feature-card fade-in hvr-float">
-                    <div class="feature-icon">
-                        <i class="fas fa-lightbulb"></i>
-                    </div>
-                    <div class="feature-card-text-content">
-                        <h3>Fixture Installation</h3>
-                        <p>Need a new light fixture, ceiling fan, or sink installed? Ricky has the expertise to get it done right.</p>
-                    </div>
-                </div>
-
-                <!-- Service 3 -->
-                <div class="card feature-card fade-in hvr-float">
-                    <div class="feature-icon">
-                        <i class="fas fa-paint-roller"></i>
-                    </div>
-                    <div class="feature-card-text-content">
-                        <h3>Small Project Assistance</h3>
-                        <p>Tackling a small home improvement project? Get an extra hand for assembly, mounting, or minor carpentry tasks.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== ABOUT SECTION ===== -->
-    <section id="about" class="about">
-        <div class="container about-container">
-            <div class="about-content">
-                <h2 class="fade-in">Meet Ricky - Your Local Handyman</h2>
-                <p class="fade-in">Hi, I'm Ricky, the owner and operator of Lil Man's Handy Hands. As your neighbor in the Elk Grove community, I started this business to provide honest, reliable handyman services that you can count on.</p>
-                <p class="fade-in">I take pride in my work and am committed to delivering high-quality craftsmanship on every job, big or small. My goal is to make your life easier by taking care of those to-do list items that you don't have the time or tools for. When you hire Lil Man's Handy Hands, you're supporting a local business dedicated to serving our community.</p>
-                <a href="#contact" class="btn fade-in scroll-link">Get in Touch</a>
-            </div>
-            <div class="about-image fade-in">
-                <!-- Replace with a photo of Ricky -->
-                <img src="/api/placeholder/600/400" alt="Ricky - Lil Man's Handy Hands">
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== GALLERY SECTION ===== -->
-    <section id="gallery" class="gallery">
-        <div class="container">
-            <div class="section-title">
-                <h2 class="fade-in">Our Recent Work</h2>
-                <p class="fade-in">Take a look at some of the projects Ricky has completed for satisfied customers in Elk Grove and nearby areas.</p>
-            </div>
-            <div class="gallery-grid fade-in">
-                <!-- Gallery items will be loaded dynamically by JavaScript -->
-            </div>
-            <div class="gallery-controls fade-in">
-                <button class="btn" id="viewMoreGallery">View More Projects</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== CONTACT SECTION ===== -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <div class="contact-title section-title">
-                <h2 class="fade-in">Ready to Get Started?</h2>
-                <p class="fade-in">Contact Ricky at Lil Man's Handy Hands today for a free estimate on your next home project in Elk Grove or the surrounding areas!</p>
-            </div>
-            <div class="contact-grid">
-                <!-- Phone -->
-                <div class="card contact-item fade-in hvr-float">
-                    <div class="contact-icon">📱</div>
-                    <h3>Call Ricky</h3>
-                    <p>+1 (123) 456-7890</p> <!-- Replace with actual phone -->
-                </div>
-
-                <!-- Email -->
-                <div class="card contact-item fade-in hvr-float">
-                    <div class="contact-icon">✉️</div>
-                    <h3>Email Us</h3>
-                    <p>ricky@lilmanshandyhands.com</p> <!-- Replace with actual email -->
-                </div>
-
-                <!-- Service Area -->
-                <div class="card contact-item fade-in hvr-float">
-                    <div class="contact-icon">📍</div>
-                    <h3>Service Area</h3>
-                    <p>Serving Elk Grove & Surrounding Communities</p>
+                <!-- Contact Form -->
+                <div class="contact-form fade-in" id="contact-form">
+                    <h3>Send a Message to Rickie</h3>
+                    <form action="mailto:lilmanshandyhands@gmail.com" method="GET" enctype="text/plain">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Your Email (for reply)</label>
+                            <input type="email" id="email" name="from" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Project Type / Subject</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Tell Rickie About Your Project</label>
+                            <textarea id="message" name="body" required></textarea>
+                        </div>
+                        <button type="submit" class="btn" formtarget="_blank">Contact Rickie</button>
+                    </form>
                 </div>
             </div>
+        </section>
+    </main>
 
-            <!-- Contact Form -->
-            <div class="contact-form fade-in">
-                <h3>Send a Message to Ricky</h3>
-                <form id="contactForm" action="mailto:ricky@lilmanshandyhands.com" method="GET" enctype="text/plain"> <!-- Update mailto -->
-                    <div class="form-group">
-                        <label for="name">Your Name</label>
-                        <input type="text" id="name" name="name" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Your Email (for reply)</label>
-                        <input type="email" id="email" name="from" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="subject">Project Type / Subject</label>
-                        <input type="text" id="subject" name="subject" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Tell Ricky About Your Project</label>
-                        <textarea id="message" name="body" class="form-control" required></textarea>
-                    </div>
-                    <button type="submit" class="btn" id="submitButton" formtarget="_blank">Request Your Free Estimate</button>
-                </form>
-                <!-- Form feedback messages removed as they are not used with mailto: -->
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== FOOTER SECTION ===== -->
+    <!-- Footer -->
     <footer>
         <div class="container footer-container">
-            <!-- Company Info -->
             <div class="footer-col">
                 <div class="logo">
-                    <img src="/photos/logo.png" alt="Lil Man's Handy Hands Footer Logo">
-                     <span>Lil Man's Handy Hands</span>
+                    <img src="photos/logo.png" alt="Lil Man's Handy Hands Footer Logo">
+                    <span>Lil Man's Handy Hands</span>
                 </div>
-                <p>Your friendly, reliable handyman service for Elk Grove and surrounding areas. Quality work by Ricky.</p>
-                <!-- Social Media Links - Add actual links if available -->
-                <div class="social-links">
-                    <a href="#" aria-label="Facebook">FB</a>
-                    <a href="#" aria-label="Yelp">YP</a> <!-- Example for Yelp -->
-                </div>
+                <p>Your friendly, reliable handyman service across Elk Grove and all of Sacramento County. Quality work by Rickie.</p>
             </div>
 
-            <!-- Quick Links -->
             <div class="footer-col">
-                <h3>Quick Links</h3>
+                <h4>Quick Links</h4>
                 <ul class="footer-links">
                     <li><a href="#home" class="scroll-link">Home</a></li>
                     <li><a href="#services" class="scroll-link">Services</a></li>
-                    <li><a href="#about" class="scroll-link">About Ricky</a></li>
+                    <li><a href="#about" class="scroll-link">About Rickie</a></li>
                     <li><a href="#gallery" class="scroll-link">Our Work</a></li>
                     <li><a href="#contact" class="scroll-link">Contact</a></li>
                 </ul>
             </div>
 
-            <!-- Services Summary -->
             <div class="footer-col">
-                <h3>Our Main Services</h3>
+                <h4>Our Main Services</h4>
                 <ul class="footer-links">
                     <li><a href="#services">General Home Repairs</a></li>
                     <li><a href="#services">Fixture Installation</a></li>
-                    <li><a href="#services">Small Project Help</a></li>
+                    <li><a href="#services">Cabinet Repairs</a></li>
+                    <li><a href="#services">Painting Services</a></li>
                     <li><a href="#services">And More!</a></li>
                 </ul>
             </div>
 
-            <!-- Contact Footer -->
             <div class="footer-col">
-                <h3>Get in Touch</h3>
+                <h4>Get in Touch</h4>
                 <ul class="footer-links">
-                    <li>Phone: (123) 456-7890</li> <!-- Replace -->
-                    <li>Email: ricky@lilmanshandyhands.com</li> <!-- Replace -->
+                    <li>Phone: +1 (916) 776-0889</li>
+                    <li>Email: lilmanshandyhands@gmail.com</li>
                     <li>Elk Grove, CA</li>
                 </ul>
             </div>
         </div>
 
-        <!-- Copyright -->
         <div class="copyright">
             <div class="container">
-                <p>&copy; 2024 Lil Man's Handy Hands. All Rights Reserved. Serving Elk Grove and nearby areas.</p>
+                <p>&copy; 2025 Lil Man's Handy Hands. All Rights Reserved. Serving Elk Grove and all of Sacramento County.</p>
             </div>
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
-
-    <!-- ===== MODAL FOR FULL IMAGE VIEW ===== -->
-    <div id="imageModal" class="modal-overlay">
-        <span class="modal-close" id="modalCloseButton">&times;</span>
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal-overlay" role="dialog" aria-labelledby="modalImage" aria-hidden="true">
+        <button class="modal-close" id="modalCloseButton" aria-label="Close image modal">&times;</button>
         <div class="modal-content">
-            <img src="" alt="Full Size Image of Ricky's Work" id="modalImage">
+            <img src="" alt="Full Size Image of Rickie's Work" id="modalImage">
         </div>
     </div>
+
+    <!-- Scripts -->
+    <script src="js/script.js"></script>
 </body>
 </html>
